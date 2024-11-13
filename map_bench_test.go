@@ -5,9 +5,7 @@
 package sync_map_test
 
 import (
-	"fmt"
 	"reflect"
-	"strings"
 	"sync"
 	"sync/atomic"
 	"testing"
@@ -21,12 +19,10 @@ type bench struct {
 }
 
 func benchMap(b *testing.B, bench bench) {
-	for _, m := range [...]casMapInterface{&DeepCopyMap{}, &RWMutexMap{}, &sync.Map{}, &sync_map.CasMap[any, any]{}} {
-		prefix, name, found := strings.Cut(fmt.Sprintf("%T", m), ".")
-		if !found {
-			name = prefix
-		}
-		b.Run(name, func(b *testing.B) {
+	maps := [...]casMapInterface{&DeepCopyMap{}, &RWMutexMap{}, &sync.Map{}, &sync_map.CasMap[any, any]{}}
+	names := [...]string{"DeepCopyMap", "RWMutexMap", "sync.Map", "Map[any,any]"}
+	for i, m := range maps {
+		b.Run(names[i], func(b *testing.B) {
 			m = reflect.New(reflect.TypeOf(m).Elem()).Interface().(casMapInterface)
 			if bench.setup != nil {
 				bench.setup(b, m)

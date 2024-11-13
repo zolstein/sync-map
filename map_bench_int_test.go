@@ -5,9 +5,7 @@
 package sync_map_test
 
 import (
-	"fmt"
 	"reflect"
-	"strings"
 	"sync"
 	"sync/atomic"
 	"testing"
@@ -101,12 +99,10 @@ func (m *MapIntWrapper) CompareAndDelete(key, old int) (deleted bool) {
 }
 
 func benchMapInt(b *testing.B, bench benchInt) {
-	for _, m := range [...]casMapInterfaceInt{&MapIntWrapper{}, &sync_map.CasMap[int, int]{}} {
-		prefix, name, found := strings.Cut(fmt.Sprintf("%T", m), ".")
-		if !found {
-			name = prefix
-		}
-		b.Run(name, func(b *testing.B) {
+	maps := [...]casMapInterfaceInt{&MapIntWrapper{}, &sync_map.CasMap[int, int]{}}
+	names := [...]string{"sync.MapWrapper", "Map[int,int]"}
+	for i, m := range maps {
+		b.Run(names[i], func(b *testing.B) {
 			m = reflect.New(reflect.TypeOf(m).Elem()).Interface().(casMapInterfaceInt)
 			if bench.setup != nil {
 				bench.setup(b, m)
