@@ -1,3 +1,5 @@
+[![Go Reference](https://pkg.go.dev/badge/github.com/zolstein/sync-map.svg)](https://pkg.go.dev/github.com/zolstein/sync-map)
+
 # sync-map
 
 A fork of Go's `sync.Map`, but with generics.
