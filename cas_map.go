@@ -15,8 +15,8 @@ import (
 // [Map.Load], [Map.LoadAndDelete], [Map.LoadOrStore], and [Map.Swap] are read operations;
 // [Map.Delete], [Map.LoadAndDelete], [Map.Store], and [Map.Swap] are write operations;
 // [Map.LoadOrStore] is a write operation when it returns loaded set to false;
-// [Map.CompareAndSwap] is a write operation when it returns swapped set to true;
-// and [Map.CompareAndDelete] is a write operation when it returns deleted set to true.
+// [CasMap.CompareAndSwap] is a write operation when it returns swapped set to true;
+// and [CasMap.CompareAndDelete] is a write operation when it returns deleted set to true.
 //
 // [the Go memory model]: https://go.dev/ref/mem
 type CasMap[K comparable, V comparable] struct {
