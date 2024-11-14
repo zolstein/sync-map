@@ -11,23 +11,7 @@ import (
 
 // This file contains reference map implementations for unit-tests.
 
-// mapInterface is the interface Map implements.
-type mapInterface interface {
-	Load(key any) (value any, ok bool)
-	Store(key, value any)
-	LoadOrStore(key, value any) (actual any, loaded bool)
-	LoadAndDelete(key any) (value any, loaded bool)
-	Delete(any)
-	Swap(key, value any) (previous any, loaded bool)
-	Range(func(key, value any) (shouldContinue bool))
-	Clear()
-}
-
-type casMapInterface interface {
-	mapInterface
-	CompareAndSwap(key, old, new any) (swapped bool)
-	CompareAndDelete(key, old any) (deleted bool)
-}
+// mapInterface is defined in version-specific files
 
 var (
 	_ mapInterface    = &RWMutexMap{}
