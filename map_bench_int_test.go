@@ -18,24 +18,6 @@ type benchInt struct {
 	perG  func(b *testing.B, pb *testing.PB, i int, m casMapInterfaceInt)
 }
 
-// mapInterface is the interface Map implements.
-type mapInterfaceInt interface {
-	Load(key int) (value int, ok bool)
-	Store(key, value int)
-	LoadOrStore(key, value int) (actual int, loaded bool)
-	LoadAndDelete(key int) (value int, loaded bool)
-	Delete(int)
-	Swap(key, value int) (previous int, loaded bool)
-	Range(func(key, value int) (shouldContinue bool))
-	Clear()
-}
-
-type casMapInterfaceInt interface {
-	mapInterfaceInt
-	CompareAndSwap(key, old, new int) (swapped bool)
-	CompareAndDelete(key, old int) (deleted bool)
-}
-
 type MapIntWrapper struct {
 	m sync.Map
 }
@@ -84,10 +66,6 @@ func (m *MapIntWrapper) Range(fn func(key, value int) (shouldContinue bool)) {
 	m.m.Range(func(key, value any) bool {
 		return fn(key.(int), value.(int))
 	})
-}
-
-func (m *MapIntWrapper) Clear() {
-	m.m.Clear()
 }
 
 func (m *MapIntWrapper) CompareAndSwap(key, old, new int) (swapped bool) {
@@ -592,18 +570,6 @@ func BenchmarkCompareAndDeleteMostlyMissesInt(b *testing.B) {
 				if m.CompareAndDelete(v, v) {
 					m.Store(v, v)
 				}
-			}
-		},
-	})
-}
-
-func BenchmarkClearInt(b *testing.B) {
-	benchMapInt(b, benchInt{
-		perG: func(b *testing.B, pb *testing.PB, i int, m casMapInterfaceInt) {
-			for ; pb.Next(); i++ {
-				k, v := i%256, i%256
-				m.Clear()
-				m.Store(k, v)
 			}
 		},
 	})
