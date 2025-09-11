@@ -36,3 +36,11 @@ delete the values? However, we also want to be able to have `Map` store non-comp
 
 The compromise is to remove these functions from the regular `Map` type, then create a separate map type with a tighter
 bound on its value type that can support them.
+
+### ... not use the new `sync.Map` implementation from Go 1.24?
+
+In 1.24, Go updated the implementation of `sync.Map` to use a concurrent hash-trie. The underlying interal `HashTrieMap`
+even already supports generics, it's just not exported in a way that makes the generic version available. I would like
+to provide an exposed version of this. However, the `HashTrieMap` implementation uses `internal/abi` functionality,
+which isn't accessible or safe to re-implement outside the standard library, so I don't know that there's a good way to
+do this. Hopefully `sync/v2` with an officially-supported generic map is coming.
