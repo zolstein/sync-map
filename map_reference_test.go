@@ -5,6 +5,7 @@
 package sync_map_test
 
 import (
+	sync_map "github.com/zolstein/sync-map"
 	"sync"
 	"sync/atomic"
 )
@@ -18,7 +19,21 @@ var (
 	_ mapInterface    = &DeepCopyMap{}
 	_ casMapInterface = &RWMutexMap{}
 	_ casMapInterface = &DeepCopyMap{}
+	_ mapInterface    = &CasMap[any, any]{}
+	_ casMapInterface = &CasMap[any, any]{}
 )
+
+type CasMap[K comparable, V comparable] struct {
+	sync_map.Map[K, V]
+}
+
+func (c *CasMap[K, V]) CompareAndSwap(key K, old, new V) (swapped bool) {
+	return sync_map.CompareAndSwap(&c.Map, key, old, new)
+}
+
+func (c *CasMap[K, V]) CompareAndDelete(key K, old V) (deleted bool) {
+	return sync_map.CompareAndDelete(&c.Map, key, old)
+}
 
 // RWMutexMap is an implementation of mapInterface using a sync.RWMutex.
 type RWMutexMap struct {

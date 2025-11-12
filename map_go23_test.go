@@ -3,11 +3,10 @@
 package sync_map_test
 
 import (
+	"github.com/zolstein/sync-map"
 	"math/rand"
 	"sync"
 	"testing"
-
-	sync_map "github.com/zolstein/sync-map"
 )
 
 // mapInterface is the interface Map implements.
