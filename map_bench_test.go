@@ -9,8 +9,6 @@ import (
 	"sync"
 	"sync/atomic"
 	"testing"
-
-	sync_map "github.com/zolstein/sync-map"
 )
 
 type bench struct {
@@ -19,7 +17,7 @@ type bench struct {
 }
 
 func benchMap(b *testing.B, bench bench) {
-	maps := [...]casMapInterface{&DeepCopyMap{}, &RWMutexMap{}, &sync.Map{}, &sync_map.CasMap[any, any]{}}
+	maps := [...]casMapInterface{&DeepCopyMap{}, &RWMutexMap{}, &sync.Map{}, &CasMap[any, any]{}}
 	names := [...]string{"DeepCopyMap", "RWMutexMap", "sync.Map", "Map[any,any]"}
 	for i, m := range maps {
 		b.Run(names[i], func(b *testing.B) {

@@ -78,7 +78,7 @@ func applyCalls(m casMapInterface, calls []mapCall) (results []mapResult, final 
 }
 
 func applyMap(calls []mapCall) ([]mapResult, map[any]any) {
-	return applyCalls(new(sync_map.CasMap[any, any]), calls)
+	return applyCalls(new(CasMap[any, any]), calls)
 }
 
 func applyRWMutexMap(calls []mapCall) ([]mapResult, map[any]any) {
@@ -235,8 +235,8 @@ func TestMapRangeNestedCall(t *testing.T) { // Issue 46399
 }
 
 func TestCompareAndSwap_NonExistingKey(t *testing.T) {
-	m := &sync_map.CasMap[any, any]{}
-	if m.CompareAndSwap(m, nil, 42) {
+	m := &sync_map.Map[any, any]{}
+	if sync_map.CompareAndSwap[any, any](m, m, nil, 42) {
 		// See https://go.dev/issue/51972#issuecomment-1126408637.
 		t.Fatalf("CompareAndSwap on a non-existing key succeeded")
 	}

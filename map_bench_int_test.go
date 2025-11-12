@@ -9,8 +9,6 @@ import (
 	"sync"
 	"sync/atomic"
 	"testing"
-
-	sync_map "github.com/zolstein/sync-map"
 )
 
 type benchInt struct {
@@ -77,7 +75,7 @@ func (m *MapIntWrapper) CompareAndDelete(key, old int) (deleted bool) {
 }
 
 func benchMapInt(b *testing.B, bench benchInt) {
-	maps := [...]casMapInterfaceInt{&MapIntWrapper{}, &sync_map.CasMap[int, int]{}}
+	maps := [...]casMapInterfaceInt{&MapIntWrapper{}, &CasMap[int, int]{}}
 	names := [...]string{"sync.MapWrapper", "Map[int,int]"}
 	for i, m := range maps {
 		b.Run(names[i], func(b *testing.B) {

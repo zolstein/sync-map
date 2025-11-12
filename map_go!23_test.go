@@ -2,7 +2,9 @@
 
 package sync_map_test
 
-import "math/rand"
+import (
+	"math/rand"
+)
 
 // mapInterface is the interface Map implements.
 type mapInterface interface {
