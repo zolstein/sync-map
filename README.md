@@ -44,7 +44,10 @@ bound on the value type.
 ### ... not use the new `sync.Map` implementation from Go 1.24?
 
 In 1.24, Go updated the implementation of `sync.Map` to use a concurrent hash-trie. The underlying interal `HashTrieMap`
-already supports generics, it's just not exported in a way that makes the generic version available. I would like
-to provide an exposed version of this. However, the `HashTrieMap` implementation uses `internal/abi` functionality,
-which isn't accessible or safe to re-implement outside the standard library, so I don't know that there's a good way to
-do this. Hopefully `sync/v2` with an officially-supported generic map is coming soon.
+already supports generics, it's just not exported in a way that makes the generic version available. Hopefully `sync/v2` 
+with an officially-supported generic map is coming soon.
+
+In the meantime, someone else has already implemented a generic version at 
+[github.com/go4org/hashtriemap](http://github.com/go4org/hashtriemap). I have not yet vetted the code thoroughly, but they
+seem as trustworthy to me as I probably do to you. If I needed a package like this and was not bound to an older version 
+of the runtime, truthfully, I would (thoroughly vet the code myself, and then) probably use that instead of this.
